@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+void calculateRatios(int data[], int size) {
+    int countPositive = 0, countNegative = 0, countZero = 0;
+
+    for (int index = 0; index < size; index++) {
+        if (data[index] > 0) {
+            countPositive++;
+        } else if (data[index] < 0) {
+            countNegative++;
+        } else {
+            countZero++;
+        }
+    }
+
+    double ratioPositive = (double)countPositive / size;
+    double ratioNegative = (double)countNegative / size;
+    double ratioZero = (double)countZero / size;
+
+    printf("%.6lf\n", ratioPositive);
+    printf("%.6lf\n", ratioNegative);
+    printf("%.6lf\n", ratioZero);
+}
+
+int main() {
+    int totalElements;
+    scanf("%d", &totalElements);
+    
+    int numbers[100]; 
+    for (int i = 0; i < totalElements; i++) {
+        scanf("%d", &numbers[i]);
+    }
+
+    calculateRatios(numbers, totalElements);
+
+    return 0;
+}
