@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<string.h>
+void convertTo24HourFormat(char *timeStr){
+    char period[3];
+    int hour;
+    strncpy(period, &timeStr[8], 2);
+    period[2] = '\0';
+    sscanf(timeStr, "%2d", &hour);
+    if (strcmp(period, "AM") == 0){
+        if (hour==12){
+            hour=0;
+        }
+    }
+    else if (strcmp(period, "PM")==0){
+        if(hour != 12){
+            hour += 12;
+        }
+    }
+    printf("%02d", hour);
+    for(int i=2;i<8;i++){
+        putchar(timeStr[i]);
+    }
+    putchar('\n');
+}
+int main(){
+    char inputTime[11];
+    scanf("%s",inputTime);
+    convertTo24HourFormat(inputTime);
+    return 0;
+}
