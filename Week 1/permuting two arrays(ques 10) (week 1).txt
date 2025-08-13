@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+int sortAscending(const void *a, const void *b){
+    return (*(int *)a - *(int *)b);
+}
+int sortDescending(const void *a, const void *b){
+    return (*(int *)b - *(int *)a);
+}
+int main(){
+    int testCases;
+    scanf("%d", &testCases);
+    while (testCases--){
+        int size, thershold;
+        scanf("%d %d", &size, &thershold);
+        int arrayA[size];
+        int arrayB[size];
+        for (int i=0;i<size;i++){
+            scanf("%d", &arrayA[i]);
+        }
+        for(int i=0;i<size;i++){
+            scanf("%d", &arrayB[i]);
+        }
+        qsort(arrayA, size, sizeof(int), sortAscending);
+        qsort(arrayB, size, sizeof(int), sortDescending);
+        int valid = 1;
+        for(int i=0;i<size;i++){
+            if (arrayA[i] +arrayB[i] <thershold){
+                valid = 0;
+                break;
+            }
+        }
+        printf(valid ? "YES\n" : "NO\n");
+    }
+    return 0;
+}
