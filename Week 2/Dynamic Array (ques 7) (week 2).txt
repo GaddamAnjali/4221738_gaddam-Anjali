@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+    int n,q,lastAnswer = 0;
+    scanf("%d %d", &n, &q);
+    int **seq = malloc(n * sizeof(int *));
+    int *sizes = calloc(n, sizeof(int));
+    int *caps = calloc(n, sizeof(int));
+    for (int i=0; i<n;i++){
+        caps[i] = 1;
+        seq[i] = malloc(sizeof(int));
+    }
+    for(int i=0;i<q;i++){
+        int type, x, y;
+        scanf("%d %d %d", &type, &x, &y);
+        int idx = (x ^ lastAnswer) % n;
+        if (type == 1){
+            if (sizes[idx] == caps[idx]){
+                caps[idx] *= 2;
+                seq[idx] = realloc(seq[idx], caps[idx] * sizeof(int));
+            }
+            seq[idx][sizes[idx]++] = y;
+        } else {
+            int val = seq[idx][y % sizes[idx]];
+            lastAnswer = val;
+            printf("%d\n", lastAnswer);
+        }
+    }
+    for(int i=0;i<n;i++) free(seq[i]);
+    free(seq); free(sizes); free(caps);
+    return 0;
+}
