@@ -1,0 +1,35 @@
+#include <stdio.h>
+int main() {
+    int t;
+    scanf("%d", &t);
+    while (t--) {
+        int n;
+        scanf("%d", &n);
+        int arr[n];
+        int i;
+        for (i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+        int totalSum = 0;
+        for (i = 0; i < n; i++) {
+            totalSum += arr[i];
+        }
+        int leftSum = 0;
+        int found = 0;
+        for (i = 0; i < n; i++) {
+            totalSum -= arr[i];
+            
+            if (leftSum == totalSum) {
+                found = 1;
+                break;
+            }
+            leftSum += arr[i];
+        }
+        
+        if (found)
+            printf("YES\n");
+        else
+            printf("NO\n");
+    }
+    return 0;
+}
