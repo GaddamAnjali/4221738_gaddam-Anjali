@@ -1,0 +1,34 @@
+#include <stdio.h>
+int isPowerOfTwo(unsigned long long x) {
+    return (x & (x - 1)) == 0;
+}
+unsigned long long biggestPowerOfTwoLessThan(unsigned long long x) {
+    unsigned long long power = 1;
+    while (power <= x) {
+        power <<= 1;
+    }
+    return power >> 1;
+}
+int main() {
+    int t;
+    scanf("%d", &t);
+    while (t--) {
+        unsigned long long n;
+        scanf("%llu", &n);
+        int turn = 0;
+        while (n != 1) {
+            if (isPowerOfTwo(n)) {
+                n = n / 2;
+            } else {
+                unsigned long long largestPower = biggestPowerOfTwoLessThan(n);
+                n = n - largestPower;
+            }
+            turn = 1 - turn; 
+        }
+        if (turn == 1)
+            printf("Louise\n");
+        else
+            printf("Richard\n");
+    }
+    return 0;
+}
