@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAXQ 100000
+typedef struct {
+    int *arr;
+    int top;
+} Stack;
+Stack* newStack(int capacity) {
+    Stack *s = malloc(sizeof(Stack));
+    s->arr = malloc(capacity * sizeof(int));
+    s->top = 0;
+    return s;
+}
+void freeStack(Stack *s) {
+    free(s->arr);
+    free(s);
+}
+void push(Stack *s, int x) {
+    s->arr[s->top++] = x;
+}
+int pop(Stack *s) {
+    return s->arr[--s->top];
+}
+int peek(const Stack *s) {
+    return s->arr[s->top - 1];
+}
+int isEmpty(const Stack *s) {
+    return s->top == 0;
+}
+int main(void) {
+    int queries;
+    if (scanf("%d", &queries) != 1) return 0;
+    Stack *inStack = newStack(queries);
+    Stack *outStack = newStack(queries);
+    while (queries--) {
+        int type;
+        scanf("%d", &type);
+        if (type == 1) {
+            int x;
+            scanf("%d", &x);
+            push(inStack, x);
+        } else if (type == 2) {
+            if (isEmpty(outStack)) {
+                while (!isEmpty(inStack)) {
+                    push(outStack, pop(inStack));
+                }
+            }
+            if (!isEmpty(outStack)) pop(outStack);
+        } else if (type == 3) {
+            if (isEmpty(outStack)) {
+                while (!isEmpty(inStack)) {
+                    push(outStack, pop(inStack));
+                }
+            }
+            if (!isEmpty(outStack)) {
+                printf("%d\n", peek(outStack));
+            }
+        }
+    }
+    freeStack(inStack);
+    freeStack(outStack);
+    return 0;
+}
