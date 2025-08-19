@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define TOO_CHAOTIC "Too chaotic\n"
+int main(void) {
+    int T;
+    if (scanf("%d", &T) != 1) return 0;
+    while (T--) {
+        int n;
+        scanf("%d", &n);
+        int *q = malloc(n * sizeof(int));
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &q[i]);
+        }
+        int totalBribes = 0;
+        int chaotic = 0;
+        for (int i = 0; i < n; i++) {
+            int origPos = q[i] - 1; 
+            if (origPos - i > 2) {
+                chaotic = 1;
+                break;
+            }
+            int start = origPos - 2;
+            if (start < 0) start = 0;
+            for (int j = start; j < i; j++) {
+                if (q[j] > q[i]) {
+                    totalBribes++;
+                }
+            }
+        }
+        if (chaotic) {
+            printf(TOO_CHAOTIC);
+        } else {
+            printf("%d\n", totalBribes);
+        }
+        free(q);
+    }
+
+    return 0;
+}
