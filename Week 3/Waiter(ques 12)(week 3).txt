@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+void generatePrimes(int q, int *primes) {
+    int count = 0, num = 2;
+    while (count < q) {
+        int isPrime = 1;
+        for (int i = 2; i * i <= num; i++) {
+            if (num % i == 0) {
+                isPrime = 0;
+                break;
+            }
+        }
+        if (isPrime) {
+            primes[count++] = num;
+        }
+        num++;
+    }
+}
+int main() {
+    int n, q;
+    scanf("%d %d", &n, &q);
+    int *plates = malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &plates[i]);
+    }
+    int *primes = malloc(q * sizeof(int));
+    generatePrimes(q, primes);
+    int *current = plates;
+    int currentSize = n;
+    int *next = NULL;
+    int nextSize = 0;
+    for (int round = 0; round < q; round++) {
+        int *A = malloc(currentSize * sizeof(int));
+        int Acount = 0;
+        int *B = malloc(currentSize * sizeof(int));
+        int Bcount = 0;
+        int prime = primes[round];
+        for (int i = currentSize - 1; i >= 0; i--) {
+            if (current[i] % prime == 0) {
+                B[Bcount++] = current[i];
+            } else {
+                A[Acount++] = current[i];
+            }
+        }
+        for (int i = Bcount - 1; i >= 0; i--) {
+            printf("%d\n", B[i]);
+        }
+        free(current);
+        free(B);
+        current = A;
+        currentSize = Acount;
+    }
+    for (int i = currentSize - 1; i >= 0; i--) {
+        printf("%d\n", current[i]);
+    }
+    free(current);
+    free(primes);
+    return 0;
+}
