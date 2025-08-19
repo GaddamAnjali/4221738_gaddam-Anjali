@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define YES "YES\n"
+#define NO  "NO\n"
+int isMatch(char left, char right) {
+    return (left == '(' && right == ')') ||
+           (left == '[' && right == ']') ||
+           (left == '{' && right == '}');
+}
+int main(void) {
+    int t;
+    if (scanf("%d", &t) != 1) return 0;
+    while (t--) {
+        char s[1001];
+        scanf("%1000s", s);
+        char stack[1001];
+        int top = -1;
+        int balanced = 1;
+        for (int i = 0; s[i] != '\0'; i++) {
+            char c = s[i];
+            if (c == '(' || c == '[' || c == '{') {
+                stack[++top] = c;
+            }
+            else {
+                if (top == -1 || !isMatch(stack[top--], c)) {
+                    balanced = 0;
+                    break;
+                }
+            }
+        }
+        if (balanced && top == -1) {
+            printf(YES);
+        } else {
+            printf(NO);
+        }
+    }
+    return 0;
+}
