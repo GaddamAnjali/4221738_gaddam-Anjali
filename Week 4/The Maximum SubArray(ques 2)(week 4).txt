@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+    int t;
+    if (scanf("%d", &t) != 1) return 0;
+    while (t--) {
+        int n;
+        scanf("%d", &n);
+        int *a = malloc(n * sizeof(int));
+        for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+        int current = a[0];
+        int best = a[0];
+        for (int i = 1; i < n; i++) {
+            if (current + a[i] > a[i])
+                current = current + a[i];
+            else
+                current = a[i];
+            if (current > best)
+                best = current;
+        }
+        long long subseq = 0;
+        int maxElem = a[0];
+        for (int i = 0; i < n; i++) {
+            if (a[i] > 0)
+                subseq += a[i];
+            if (a[i] > maxElem)
+                maxElem = a[i];
+        }
+        if (subseq == 0)
+            subseq = maxElem;
+        printf("%d %lld\n", best, subseq);
+        free(a);
+    }
+    return 0;
+}
