@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MOD 1000000007
+long modPow(long base, int exp) {
+    long result = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp & 1) result = (result * base) % MOD;
+        base = (base * base) % MOD;
+        exp >>= 1;
+    }
+    return result;
+}
+int main(void) {
+    int t;
+    if (scanf("%d", &t) != 1) return 0;
+    while (t--) {
+        int n, m;
+        scanf("%d %d", &n, &m);
+        long *rowWays = calloc(m + 1, sizeof(long));
+        rowWays[0] = 1;
+        for (int w = 1; w <= m; w++) {
+            for (int block = 1; block <= 4; block++) {
+                if (w - block >= 0) {
+                    rowWays[w] = (rowWays[w] + rowWays[w - block]) % MOD;
+                }
+            }
+        }
+        long *totalWays = malloc((m + 1) * sizeof(long));
+        for (int w = 0; w <= m; w++) {
+            totalWays[w] = modPow(rowWays[w], n);
+        }
+        long *solidWays = calloc(m + 1, sizeof(long));
+        solidWays[0] = 1;  
+        for (int w = 1; w <= m; w++) {
+            long bad = 0;
+            for (int cut = 1; cut < w; cut++) {
+                bad = (bad + solidWays[cut] * totalWays[w - cut]) % MOD;
+            }
+            solidWays[w] = (totalWays[w] - bad + MOD) % MOD;
+        }
+        printf("%ld\n", solidWays[m]);
+        free(rowWays);
+        free(totalWays);
+        free(solidWays);
+    }
+    return 0;
+}
