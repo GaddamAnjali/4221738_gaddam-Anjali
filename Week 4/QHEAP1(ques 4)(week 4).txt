@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100000
+int heap[MAX];
+int size = 0;
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+void heapifyUp(int index) {
+    while (index > 0 && heap[index] < heap[(index - 1) / 2]) {
+        swap(&heap[index], &heap[(index - 1) / 2]);
+        index = (index - 1) / 2;
+    }
+}
+void heapifyDown(int index) {
+    int smallest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    if (left < size && heap[left] < heap[smallest])
+        smallest = left;
+    if (right < size && heap[right] < heap[smallest])
+        smallest = right;
+    if (smallest != index) {
+        swap(&heap[index], &heap[smallest]);
+        heapifyDown(smallest);
+    }
+}
+void insert(int val) {
+    heap[size] = val;
+    heapifyUp(size);
+    size++;
+}
+int findIndex(int val) {
+    for (int i = 0; i < size; i++) {
+        if (heap[i] == val) return i;
+    }
+    return -1;
+}
+void delete(int val) {
+    int index = findIndex(val);
+    if (index == -1) return;
+
+    heap[index] = heap[size - 1];
+    size--;
+    if (index > 0 && heap[index] < heap[(index - 1) / 2]) {
+        heapifyUp(index);
+    } else {
+        heapifyDown(index);
+    }
+}
+void printMin() {
+    if (size > 0)
+        printf("%d\n", heap[0]);
+}
+int main() {
+    int q;
+    scanf("%d", &q);
+    while (q--) {
+        int type, val;
+        scanf("%d", &type);
+        if (type == 1) {
+            scanf("%d", &val);
+            insert(val);
+        } else if (type == 2) {
+            scanf("%d", &val);
+            delete(val);
+        } else if (type == 3) {
+            printMin();
+        }
+    }
+    return 0;
+}
