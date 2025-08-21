@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_N 100000
+typedef struct {
+    int data[MAX_N];
+    int front;
+    int rear;
+} Deque;
+void initDeque(Deque *dq) {
+    dq->front = 0;
+    dq->rear = -1;
+}
+int isEmpty(Deque *dq) {
+    return dq->front > dq->rear;
+}
+void pushBack(Deque *dq, int value) {
+    dq->rear++;
+    dq->data[dq->rear] = value;
+}
+void popFront(Deque *dq) {
+    dq->front++;
+}
+void popBack(Deque *dq) {
+    dq->rear--;
+}
+int front(Deque *dq) {
+    return dq->data[dq->front];
+}
+int back(Deque *dq) {
+    return dq->data[dq->rear];
+}
+int main() {
+    int n, q;
+    scanf("%d %d", &n, &q);
+    int *arr = (int *)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    while (q--) {
+        int d;
+        scanf("%d", &d);
+        Deque dq;
+        initDeque(&dq);
+        int minOfMax = -1;
+        for (int i = 0; i < n; i++) {
+            while (!isEmpty(&dq) && front(&dq) <= i - d) {
+                popFront(&dq);
+            }
+            while (!isEmpty(&dq) && arr[back(&dq)] <= arr[i]) {
+                popBack(&dq);
+            }
+            pushBack(&dq, i);
+            if (i >= d - 1) {
+                int currentMax = arr[front(&dq)];
+                if (minOfMax == -1 || currentMax < minOfMax) {
+                    minOfMax = currentMax;
+                }
+            }
+        }
+        printf("%d\n", minOfMax);
+    }
+    free(arr);
+    return 0;
+}
