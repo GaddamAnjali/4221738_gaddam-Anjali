@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+    int n1, n2, n3;
+    scanf("%d %d %d", &n1, &n2, &n3);
+    int *s1 = malloc(n1 * sizeof(int));
+    int *s2 = malloc(n2 * sizeof(int));
+    int *s3 = malloc(n3 * sizeof(int));
+    int h1 = 0, h2 = 0, h3 = 0;
+    for (int i = 0; i < n1; i++) {
+        scanf("%d", &s1[i]);
+        h1 += s1[i];
+    }
+    for (int i = 0; i < n2; i++) {
+        scanf("%d", &s2[i]);
+        h2 += s2[i];
+    }
+    for (int i = 0; i < n3; i++) {
+        scanf("%d", &s3[i]);
+        h3 += s3[i];
+    }
+    int i1 = 0, i2 = 0, i3 = 0;
+    while (1) {
+        if (i1 == n1 || i2 == n2 || i3 == n3) {
+            printf("0\n");
+            break;
+        }
+        if (h1 == h2 && h2 == h3) {
+            printf("%d\n", h1);
+            break;
+        }
+        if (h1 >= h2 && h1 >= h3) {
+            h1 -= s1[i1++];
+        } else if (h2 >= h1 && h2 >= h3) {
+            h2 -= s2[i2++];
+        } else {
+            h3 -= s3[i3++];
+        }
+    }
+    free(s1);
+    free(s2);
+    free(s3);
+    return 0;
+}
