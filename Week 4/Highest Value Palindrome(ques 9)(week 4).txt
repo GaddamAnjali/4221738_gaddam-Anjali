@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+    char s[n + 1];
+    scanf("%s", s);
+    int changes[n]; 
+    memset(changes, 0, sizeof(changes));
+    int i, j;
+    int required_changes = 0;
+    for (i = 0, j = n - 1; i < j; i++, j--) {
+        if (s[i] != s[j]) {
+            char higher = max(s[i], s[j]);
+            s[i] = s[j] = higher;
+            changes[i] = changes[j] = 1;
+            required_changes++;
+        }
+    }
+    if (required_changes > k) {
+        printf("-1\n");
+        return 0;
+    }
+    int remaining = k - required_changes;
+    for (i = 0, j = n - 1; i <= j; i++, j--) {
+        if (i == j) {
+            if (remaining > 0 && s[i] != '9') {
+                s[i] = '9';
+                remaining--;
+            }
+        } else {
+            if (s[i] != '9') {
+                if (changes[i] || changes[j]) {
+                    if (remaining >= 1) {
+                        s[i] = s[j] = '9';
+                        remaining--;
+                    }
+                } else {
+                    if (remaining >= 2) {
+                        s[i] = s[j] = '9';
+                        remaining -= 2;
+                    }
+                }
+            }
+        }
+    }
+    printf("%s\n", s);
+    return 0;
+}
